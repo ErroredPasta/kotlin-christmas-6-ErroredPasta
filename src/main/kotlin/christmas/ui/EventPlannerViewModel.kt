@@ -1,6 +1,6 @@
 package christmas.ui
 
-import christmas.domain.logic.hasDuplicatedMenus
+import christmas.domain.logic.MenuValidator
 import christmas.domain.model.Menu
 import christmas.domain.util.onFailureOtherThanNoSuchElementException
 import java.time.LocalDate
@@ -8,7 +8,9 @@ import kotlin.properties.Delegates
 
 typealias Callback = (UiState) -> Unit
 
-class EventPlannerViewModel {
+class EventPlannerViewModel(
+    private val menuValidator: MenuValidator
+) {
     private lateinit var date: LocalDate
     private lateinit var menusAndAmounts: List<Pair<Menu, Int>>
 
@@ -46,9 +48,7 @@ class EventPlannerViewModel {
 
     fun setMenusAndAmounts(menusAndAmounts: List<String>) {
         runCatching {
-            convertToMenusAndAmounts(input = menusAndAmounts).also {
-                require(!it.hasDuplicatedMenus()) { DUPLICATED_MENU_MESSAGE }
-            }
+            convertToMenusAndAmounts(input = menusAndAmounts).also { menuValidator.validate(menusAndAmounts = it) }
         }.onSuccess {
             this.menusAndAmounts = it
             uiState = UiState.GetMenusAndAmountsDone
@@ -73,6 +73,5 @@ class EventPlannerViewModel {
         const val INVALID_DATE_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
         const val MENU_AMOUNT_DIVIDER = '-'
         const val INVALID_ORDER_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
-        const val DUPLICATED_MENU_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
     }
 }

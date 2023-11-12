@@ -1,5 +1,7 @@
 package christmas.ui.view
 
+import christmas.domain.logic.MenuValidator
+import christmas.ui.EventPlannerViewModel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -10,13 +12,15 @@ class EventPlannerViewTest {
     private lateinit var view: EventPlannerView
     private lateinit var inputView: TestInputView
     private lateinit var outputView: TestOutputView
+    private lateinit var viewModel: EventPlannerViewModel
 
     @BeforeEach
     fun setUp() {
         inputView = TestInputView()
         outputView = TestOutputView()
+        viewModel = EventPlannerViewModel(menuValidator = MenuValidator)
 
-        view = EventPlannerView(inputView = inputView, outputView = outputView)
+        view = EventPlannerView(inputView = inputView, outputView = outputView, viewModel = viewModel)
     }
 
     @ParameterizedTest

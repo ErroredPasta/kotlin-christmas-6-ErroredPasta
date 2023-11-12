@@ -6,10 +6,9 @@ import christmas.ui.UiState
 
 class EventPlannerView(
     private val inputView: InputView,
-    private val outputView: OutputView
+    private val outputView: OutputView,
+    private val viewModel: EventPlannerViewModel
 ) {
-    private val viewModel = EventPlannerViewModel()
-
     fun start() {
         viewModel.setCallback { uiState ->
             when (uiState) {
