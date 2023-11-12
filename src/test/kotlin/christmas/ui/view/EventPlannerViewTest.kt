@@ -42,7 +42,8 @@ class EventPlannerViewTest {
     @DisplayName("방문 날짜 입력 시 1 ~ 31사이의 값이 아닌 경우 유효하지 않은 날짜라고 출력")
     fun start_dayOfMonthIsOutOfValidRange_displayInvalidDateMessage(dayOfMonth: Int) {
         // given
-        inputView.setInputs(dayOfMonth.toString(), "1") // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
+        // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
+        inputView.setInputs(dayOfMonth.toString(), VALID_DAY_OF_MONEY)
 
         // when
         view.start()
@@ -56,12 +57,17 @@ class EventPlannerViewTest {
     @DisplayName("방문 날짜 입력 시 숫자 외의 입력을 한 경우 유효하지 않은 날짜라고 출력")
     fun start_nonNumberInput_displayInvalidDateMessage(input: String) {
         // given
-        inputView.setInputs(input, "1") // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
+        // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
+        inputView.setInputs(input, VALID_DAY_OF_MONEY)
 
         // when
         view.start()
 
         // then
         assertThat(outputView.capturedTexts).contains(TestInputView.INVALID_DATE_MESSAGE)
+    }
+
+    companion object {
+        const val VALID_DAY_OF_MONEY = 1.toString()
     }
 }
