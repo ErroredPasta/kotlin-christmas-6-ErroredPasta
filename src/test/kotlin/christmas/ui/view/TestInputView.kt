@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Menu
 import java.time.DateTimeException
 import java.time.LocalDate
 
@@ -19,6 +20,10 @@ class TestInputView : InputView {
     }.onFailure { error ->
         if (error is DateTimeException) throw IllegalArgumentException(INVALID_DATE_MESSAGE)
     }.getOrThrow()
+
+    override fun getMenusAndAmounts(): List<Pair<Menu, Int>> {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         const val YEAR = 2023
