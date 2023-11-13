@@ -28,7 +28,7 @@ class EventPlannerViewTest {
     @DisplayName("방문 날짜 입력 시 올바르게 입력할 경우 유효하지 않은 날짜라고 출력하지 않음")
     fun start_validInput_notDisplayInvalidDateMessage(dayOfMonth: Int) {
         // given
-        inputView.setInputs(dayOfMonth.toString())
+        inputView.setInputs(dayOfMonth.toString(), VALID_MENUS_AND_AMOUNTS)
 
         // when
         view.start()
@@ -43,7 +43,7 @@ class EventPlannerViewTest {
     fun start_dayOfMonthIsOutOfValidRange_displayInvalidDateMessage(dayOfMonth: Int) {
         // given
         // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
-        inputView.setInputs(dayOfMonth.toString(), VALID_DAY_OF_MONEY)
+        inputView.setInputs(dayOfMonth.toString(), VALID_DAY_OF_MONEY, VALID_MENUS_AND_AMOUNTS)
 
         // when
         view.start()
@@ -55,10 +55,10 @@ class EventPlannerViewTest {
     @ParameterizedTest
     @ValueSource(strings = ["a", "", "one"])
     @DisplayName("방문 날짜 입력 시 숫자 외의 입력을 한 경우 유효하지 않은 날짜라고 출력")
-    fun start_nonNumberInput_displayInvalidDateMessage(input: String) {
+    fun start_nonNumberInputForVisitDate_displayInvalidDateMessage(input: String) {
         // given
         // 올바른 입력이 들어올때 까지 반복하므로 마지막에 올바른 입력을 추가
-        inputView.setInputs(input, VALID_DAY_OF_MONEY)
+        inputView.setInputs(input, VALID_DAY_OF_MONEY, VALID_MENUS_AND_AMOUNTS)
 
         // when
         view.start()
@@ -69,5 +69,6 @@ class EventPlannerViewTest {
 
     companion object {
         const val VALID_DAY_OF_MONEY = 1.toString()
+        const val VALID_MENUS_AND_AMOUNTS = "해산물파스타-2,레드와인-1,초코케이크-1"
     }
 }

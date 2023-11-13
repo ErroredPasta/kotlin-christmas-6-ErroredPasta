@@ -13,15 +13,9 @@ class TestInputView : InputView {
 
     override fun getDayOfMonth(): Int = readInt()
 
-    override fun getMenusAndAmounts(): List<String> {
-        // TODO: implement test view method
-        return listOf("티본스테이크-1")
-    }
+    override fun getMenusAndAmounts(): List<String> = readLine().split(InputView.MENU_DELIMITER)
 
     companion object {
-        const val YEAR = 2023
-        const val MONTH = 12
-
         const val INVALID_DATE_MESSAGE = InputView.INVALID_DATE_MESSAGE
     }
 }
