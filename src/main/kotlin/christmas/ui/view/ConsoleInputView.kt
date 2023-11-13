@@ -2,6 +2,7 @@ package christmas.ui.view
 
 import camp.nextstep.edu.missionutils.Console
 import christmas.domain.model.Menu
+import christmas.domain.util.onFailureOtherThanNoSuchElementException
 import java.time.DateTimeException
 import java.time.LocalDate
 
@@ -11,7 +12,7 @@ class ConsoleInputView : InputView {
 
         return runCatching {
             LocalDate.of(InputView.YEAR, InputView.MONTH, readInt())
-        }.onFailure { error ->
+        }.onFailureOtherThanNoSuchElementException { error ->
             if (error is DateTimeException) throw IllegalArgumentException(InputView.INVALID_DATE_MESSAGE)
         }.getOrThrow()
     }
@@ -24,7 +25,7 @@ class ConsoleInputView : InputView {
                 val (menuName, amount) = it.split(InputView.MENU_AMOUNT_DIVIDER)
                 Menu.getMenuByMenuName(menuName = menuName) to amount.toInt()
             }
-        }.onFailure { error ->
+        }.onFailureOtherThanNoSuchElementException { error ->
             if (error is IndexOutOfBoundsException) throw IllegalArgumentException(InputView.INVALID_ORDER_MESSAGE)
             if (error is NumberFormatException) throw IllegalArgumentException(InputView.INVALID_ORDER_MESSAGE)
         }.getOrThrow()

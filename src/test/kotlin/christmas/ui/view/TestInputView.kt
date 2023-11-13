@@ -1,6 +1,7 @@
 package christmas.ui.view
 
 import christmas.domain.model.Menu
+import christmas.domain.util.onFailureOtherThanNoSuchElementException
 import java.time.DateTimeException
 import java.time.LocalDate
 
@@ -17,7 +18,7 @@ class TestInputView : InputView {
 
     override fun getDate(): LocalDate = runCatching {
         LocalDate.of(YEAR, MONTH, readInt())
-    }.onFailure { error ->
+    }.onFailureOtherThanNoSuchElementException { error ->
         if (error is DateTimeException) throw IllegalArgumentException(INVALID_DATE_MESSAGE)
     }.getOrThrow()
 

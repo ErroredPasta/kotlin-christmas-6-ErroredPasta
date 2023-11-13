@@ -9,9 +9,11 @@ fun <T, R> T.runCatchingUntilSuccess(
         runCatching(block = block).onSuccess {
             onSuccess(it)
             return
-        }.onFailure { error ->
-            if (error is NoSuchElementException) throw error
-            onFailure(error)
-        }
+        }.onFailureOtherThanNoSuchElementException(action = onFailure)
     }
+}
+
+fun <T> Result<T>.onFailureOtherThanNoSuchElementException(action: (Throwable) -> Unit) = onFailure { error ->
+    if (error is NoSuchElementException) throw error
+    action(error)
 }

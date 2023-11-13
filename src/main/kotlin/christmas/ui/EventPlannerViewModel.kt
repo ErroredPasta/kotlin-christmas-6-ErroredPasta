@@ -2,6 +2,7 @@ package christmas.ui
 
 import christmas.domain.logic.hasDuplicatedMenus
 import christmas.domain.model.Menu
+import christmas.domain.util.onFailureOtherThanNoSuchElementException
 import java.time.LocalDate
 import kotlin.properties.Delegates
 
@@ -44,7 +45,7 @@ class EventPlannerViewModel {
         }.onSuccess {
             this.menusAndAmounts = menusAndAmounts
             uiState = UiState.GetMenusAndAmountsDone
-        }.onFailure { error ->
+        }.onFailureOtherThanNoSuchElementException { error ->
             uiState = UiState.Error(error = error)
         }
     }
