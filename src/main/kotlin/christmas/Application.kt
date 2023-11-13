@@ -7,8 +7,7 @@ fun main() {
     val component = createEventPlannerComponent()
     val view = component.getEventPlannerView()
 
-    view.onStart()
-    view.onGetDateDone()
+    view.start()
 }
 
 fun createEventPlannerComponent(): EventPlannerComponent = EventPlannerComponentImpl()

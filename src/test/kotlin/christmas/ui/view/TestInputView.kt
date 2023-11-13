@@ -1,10 +1,5 @@
 package christmas.ui.view
 
-import christmas.domain.model.Menu
-import christmas.domain.util.onFailureOtherThanNoSuchElementException
-import java.time.DateTimeException
-import java.time.LocalDate
-
 class TestInputView : InputView {
     private val inputs = mutableListOf<String>()
 
@@ -16,14 +11,11 @@ class TestInputView : InputView {
 
     private fun readInt(): Int = requireNotNull(readLine().toIntOrNull()) { INVALID_DATE_MESSAGE }
 
-    override fun getDate(): LocalDate = runCatching {
-        LocalDate.of(YEAR, MONTH, readInt())
-    }.onFailureOtherThanNoSuchElementException { error ->
-        if (error is DateTimeException) throw IllegalArgumentException(INVALID_DATE_MESSAGE)
-    }.getOrThrow()
+    override fun getDayOfMonth(): Int = readInt()
 
-    override fun getMenusAndAmounts(): List<Pair<Menu, Int>> {
-        TODO("Not yet implemented")
+    override fun getMenusAndAmounts(): List<String> {
+        // TODO: implement test view method
+        return listOf("티본스테이크-1")
     }
 
     companion object {

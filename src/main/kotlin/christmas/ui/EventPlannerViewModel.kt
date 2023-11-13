@@ -20,11 +20,10 @@ class EventPlannerViewModel {
             field = value
         }
 
-    var uiState: UiState by Delegates.observable(UiState.Initialized) { _, oldValue, newValue ->
+    private var uiState: UiState by Delegates.observable(UiState.Initialized) { _, oldValue, newValue ->
         previousState = oldValue
         callback?.invoke(newValue)
     }
-        private set
 
     fun setCallback(callback: Callback) {
         this.callback = callback
@@ -34,23 +33,46 @@ class EventPlannerViewModel {
         uiState = previousState
     }
 
-    fun setDate(date: LocalDate) {
-        this.date = date
-        uiState = UiState.GetDateDone
-    }
-
-    fun setMenusAndAmounts(menusAndAmounts: List<Pair<Menu, Int>>) {
+    fun setDate(dayOfMonth: Int) {
         runCatching {
-            require(!menusAndAmounts.hasDuplicatedMenus()) { DUPLICATED_MENU_MESSAGE }
+            LocalDate.of(YEAR, MONTH, dayOfMonth)
         }.onSuccess {
-            this.menusAndAmounts = menusAndAmounts
-            uiState = UiState.GetMenusAndAmountsDone
-        }.onFailureOtherThanNoSuchElementException { error ->
-            uiState = UiState.Error(error = error)
+            date = it
+            uiState = UiState.GetDateDone
+        }.onFailureOtherThanNoSuchElementException {
+            uiState = UiState.Error(error = IllegalArgumentException(INVALID_DATE_MESSAGE))
         }
     }
 
+    fun setMenusAndAmounts(menusAndAmounts: List<String>) {
+        runCatching {
+            convertToMenusAndAmounts(input = menusAndAmounts).also {
+                require(!it.hasDuplicatedMenus()) { DUPLICATED_MENU_MESSAGE }
+            }
+        }.onSuccess {
+            this.menusAndAmounts = it
+            uiState = UiState.GetMenusAndAmountsDone
+        }.onFailureOtherThanNoSuchElementException { error ->
+            uiState = if (error is NumberFormatException) {
+                UiState.Error(error = IllegalArgumentException(INVALID_ORDER_MESSAGE))
+            } else {
+                UiState.Error(error = error)
+            }
+        }
+    }
+
+    private fun convertToMenusAndAmounts(input: List<String>): List<Pair<Menu, Int>> = input.map {
+        val (menuName, amount) = it.split(MENU_AMOUNT_DIVIDER)
+        Menu.getMenuByMenuName(menuName = menuName) to amount.toInt()
+    }
+
     companion object {
+        const val YEAR = 2023
+        const val MONTH = 12
+
+        const val INVALID_DATE_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
+        const val MENU_AMOUNT_DIVIDER = '-'
+        const val INVALID_ORDER_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
         const val DUPLICATED_MENU_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
     }
 }
