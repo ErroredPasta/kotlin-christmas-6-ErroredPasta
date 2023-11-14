@@ -109,16 +109,16 @@ class EventPlannerViewModelTest {
     }
 
     @Test
-    @DisplayName("알맞은 주문과 개수 입력 시 uiState가 GetMenusAndAmountsDone으로 변경")
+    @DisplayName("알맞은 주문과 개수 입력 시 uiState가 GetMenusAndAmountsDone으로 변경되고 주문한 메뉴가 반영됨")
     fun setMenusAndAmounts_validMenusAndAmounts_uiStateChangesToGetMenusAndAmountsDone() {
         // given
         val validMenusAndAmounts = listOf("해산물파스타-2", "레드와인-1", "초코케이크-1")
 
-        val isGetMenusAndAmountsDone = AtomicBoolean(false)
+        val menusAndAmounts = AtomicReference<List<Pair<Menu, Int>>>(null)
         val hasErrorOccurred = AtomicBoolean(false)
         viewModel.setCallback { uiState ->
             when (uiState) {
-                is UiState.GetMenusAndAmountsDone -> isGetMenusAndAmountsDone.set(true)
+                is UiState.GetMenusAndAmountsDone -> menusAndAmounts.set(uiState.menusAndAmounts)
                 is UiState.Error -> hasErrorOccurred.set(true)
                 else -> Unit
             }
@@ -128,7 +128,8 @@ class EventPlannerViewModelTest {
         viewModel.setMenusAndAmounts(menusAndAmounts = validMenusAndAmounts)
 
         // then
-        assertThat(isGetMenusAndAmountsDone.get()).isTrue()
+        val expected = listOf(Menu.SEAFOOD_PASTA to 2, Menu.RED_WINE to 1, Menu.CHOCOLATE_CAKE to 1)
+        assertThat(menusAndAmounts.get()).isEqualTo(expected)
         assertThat(hasErrorOccurred.get()).isFalse()
     }
 
