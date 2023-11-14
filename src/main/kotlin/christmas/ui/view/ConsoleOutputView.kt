@@ -23,4 +23,17 @@ class ConsoleOutputView : OutputView {
         println(OutputView.DISCOUNT_NOT_APPLIED_TOTAL_PRICE_TITLE)
         println(OutputView.PRICE_FORMAT.format(totalPrice))
     }
+
+    override fun displayShouldGiveaway(shouldGiveaway: Boolean) {
+        println(OutputView.GIVEAWAY_TITLE)
+
+        val giveawayMenuMessage = if (shouldGiveaway) {
+            val (menu, amount) = OutputView.giveawayMenu
+            OutputView.MENU_AND_AMOUNT_FORMAT.format(menu.menuName, amount)
+        } else {
+            OutputView.NOTHING
+        }
+
+        println(giveawayMenuMessage)
+    }
 }

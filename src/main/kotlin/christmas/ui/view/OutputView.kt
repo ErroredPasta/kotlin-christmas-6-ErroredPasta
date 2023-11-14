@@ -7,6 +7,7 @@ interface OutputView {
     fun displayErrorMessage(message: String?)
     fun displayMenusAndAmounts(menusAndAmounts: List<Pair<Menu, Int>>)
     fun displayDiscountNotAppliedTotalPrice(totalPrice: Int)
+    fun displayShouldGiveaway(shouldGiveaway: Boolean)
 
     companion object {
         const val WELCOME_MESSAGE = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."
@@ -17,5 +18,8 @@ interface OutputView {
         const val ORDERED_MENUS_TITLE = "<주문 메뉴>"
         const val DISCOUNT_NOT_APPLIED_TOTAL_PRICE_TITLE = "<할인 전 총주문 금액>"
         const val PRICE_FORMAT = "%,d원"
+        const val GIVEAWAY_TITLE = "<증정 메뉴>"
+        val giveawayMenu = Menu.CHAMPAGNE to 1
+        const val NOTHING = "없음"
     }
 }

@@ -21,4 +21,8 @@ class TestOutputView : OutputView {
     override fun displayDiscountNotAppliedTotalPrice(totalPrice: Int) {
 //        TODO("Not yet implemented")
     }
+
+    override fun displayShouldGiveaway(shouldGiveaway: Boolean) {
+//        TODO("Not yet implemented")
+    }
 }

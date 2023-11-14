@@ -7,5 +7,6 @@ sealed interface UiState {
     data object GetDateDone : UiState
     data class GetMenusAndAmountsDone(val menusAndAmounts: List<Pair<Menu, Int>>) : UiState
     data class DisplayMenusAndAmountsDone(val totalPrice: Int) : UiState
+    data class DisplayDiscountNotAppliedTotalPriceDone(val shouldGiveaway: Boolean) : UiState
     data class Error(val error: Throwable) : UiState
 }

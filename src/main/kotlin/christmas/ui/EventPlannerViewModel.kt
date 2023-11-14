@@ -81,14 +81,18 @@ class EventPlannerViewModel(
         this.uiState = UiState.DisplayMenusAndAmountsDone(totalPrice = totalPrice)
     }
 
+    fun displayDiscountNotAppliedTotalPriceDone() {
+        this.uiState = UiState.DisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway = totalPrice >= GIVEAWAY_PRICE)
+    }
+
     companion object {
         const val YEAR = 2023
         const val MONTH = 12
-
         const val INVALID_DATE_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
         const val MENU_AMOUNT_DIVIDER = '-'
         const val REQUIRED_MENU_AMOUNT_DIVIDER_COUNT = 1
         const val INVALID_ORDER_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
         const val TOTAL_PRICE_NOT_INITIALIZED = -1
+        const val GIVEAWAY_PRICE = 120_000
     }
 }

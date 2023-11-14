@@ -40,6 +40,12 @@ class EventPlannerView(
     private fun onDisplayMenusAndAmountsDone(totalPrice: Int) {
         outputView.displayMessage(message = "") // new line
         outputView.displayDiscountNotAppliedTotalPrice(totalPrice = totalPrice)
+        viewModel.displayDiscountNotAppliedTotalPriceDone()
+    }
+
+    private fun onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway: Boolean) {
+        outputView.displayMessage(message = "") // new line
+        outputView.displayShouldGiveaway(shouldGiveaway = shouldGiveaway)
     }
 
     private fun handleUiState(uiState: UiState): Unit = when (uiState) {
@@ -47,6 +53,7 @@ class EventPlannerView(
         UiState.GetDateDone -> onGetDateDone()
         is UiState.GetMenusAndAmountsDone -> onGetMenusAndAmountsDone(menusAndAmounts = uiState.menusAndAmounts)
         is UiState.DisplayMenusAndAmountsDone -> onDisplayMenusAndAmountsDone(totalPrice = uiState.totalPrice)
+        is UiState.DisplayDiscountNotAppliedTotalPriceDone -> onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway = uiState.shouldGiveaway)
         is UiState.Error -> handleError(errorState = uiState)
     }
 
