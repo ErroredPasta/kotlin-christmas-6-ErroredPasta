@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Menu
 import christmas.domain.util.runCatchingUntilSuccess
 import christmas.ui.EventPlannerViewModel
 import christmas.ui.UiState
@@ -10,15 +11,7 @@ class EventPlannerView(
     private val viewModel: EventPlannerViewModel
 ) {
     fun start() {
-        viewModel.setCallback { uiState ->
-            when (uiState) {
-                UiState.Initialized -> onStart()
-                UiState.GetDateDone -> onGetDateDone()
-                UiState.GetMenusAndAmountsDone -> Unit // TODO implement next action
-                is UiState.Error -> handleError(errorState = uiState)
-            }
-        }
-
+        viewModel.setCallback { handleUiState(uiState = it) }
         onStart()
     }
 
@@ -37,6 +30,20 @@ class EventPlannerView(
         onSuccess = { menusAndAmounts -> viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts) },
         onFailure = { error -> outputView.displayErrorMessage(error.message) }
     )
+
+    private fun onGetMenusAndAmountsDone(menusAndAmounts: List<Pair<Menu, Int>>) {
+        outputView.displayMessage(message = OutputView.PREVIEW_BENEFITS_MESSAGE)
+        outputView.displayMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+        viewModel.displayMenusAndAmountsDone()
+    }
+
+    private fun handleUiState(uiState: UiState): Unit = when (uiState) {
+        UiState.Initialized -> onStart()
+        UiState.GetDateDone -> onGetDateDone()
+        is UiState.GetMenusAndAmountsDone -> onGetMenusAndAmountsDone(menusAndAmounts = uiState.menusAndAmounts)
+        is UiState.DisplayMenusAndAmountsDone -> Unit // TODO: implement next action
+        is UiState.Error -> handleError(errorState = uiState)
+    }
 
     private fun handleError(errorState: UiState.Error) {
         outputView.displayErrorMessage(errorState.error.message)

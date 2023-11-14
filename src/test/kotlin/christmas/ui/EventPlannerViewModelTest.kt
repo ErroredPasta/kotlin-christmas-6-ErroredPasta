@@ -118,7 +118,7 @@ class EventPlannerViewModelTest {
         val hasErrorOccurred = AtomicBoolean(false)
         viewModel.setCallback { uiState ->
             when (uiState) {
-                UiState.GetMenusAndAmountsDone -> isGetMenusAndAmountsDone.set(true)
+                is UiState.GetMenusAndAmountsDone -> isGetMenusAndAmountsDone.set(true)
                 is UiState.Error -> hasErrorOccurred.set(true)
                 else -> Unit
             }

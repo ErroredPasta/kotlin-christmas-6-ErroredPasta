@@ -52,7 +52,7 @@ class EventPlannerViewModel(
             convertToMenusAndAmounts(input = menusAndAmounts).also { menuValidator.validate(menusAndAmounts = it) }
         }.onSuccess {
             this.menusAndAmounts = it
-            uiState = UiState.GetMenusAndAmountsDone
+            uiState = UiState.GetMenusAndAmountsDone(menusAndAmounts = it)
         }.onFailureOtherThanNoSuchElementException { error ->
             uiState = when (error) {
                 is NumberFormatException -> UiState.Error(error = IllegalArgumentException(INVALID_ORDER_MESSAGE))
@@ -72,6 +72,11 @@ class EventPlannerViewModel(
     private fun convertToMenusAndAmounts(input: List<String>): List<Pair<Menu, Int>> = input.map {
         val (menuName, amount) = it.split(MENU_AMOUNT_DIVIDER)
         Menu.getMenuByMenuName(menuName = menuName) to amount.toInt()
+    }
+
+    fun displayMenusAndAmountsDone() {
+        // TODO: calculate total price from menus and amounts
+        this.uiState = UiState.DisplayMenusAndAmountsDone(totalPrice = 0)
     }
 
     companion object {

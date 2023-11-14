@@ -1,8 +1,11 @@
 package christmas.ui
 
+import christmas.domain.model.Menu
+
 sealed interface UiState {
     data object Initialized : UiState
     data object GetDateDone : UiState
-    data object GetMenusAndAmountsDone : UiState
+    data class GetMenusAndAmountsDone(val menusAndAmounts: List<Pair<Menu, Int>>) : UiState
+    data class DisplayMenusAndAmountsDone(val totalPrice: Int) : UiState
     data class Error(val error: Throwable) : UiState
 }
