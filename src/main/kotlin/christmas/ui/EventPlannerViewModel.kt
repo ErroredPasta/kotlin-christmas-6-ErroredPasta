@@ -48,16 +48,24 @@ class EventPlannerViewModel(
 
     fun setMenusAndAmounts(menusAndAmounts: List<String>) {
         runCatching {
+            menusAndAmounts.checkFormats()
             convertToMenusAndAmounts(input = menusAndAmounts).also { menuValidator.validate(menusAndAmounts = it) }
         }.onSuccess {
             this.menusAndAmounts = it
             uiState = UiState.GetMenusAndAmountsDone
         }.onFailureOtherThanNoSuchElementException { error ->
-            uiState = if (error is NumberFormatException) {
-                UiState.Error(error = IllegalArgumentException(INVALID_ORDER_MESSAGE))
-            } else {
-                UiState.Error(error = error)
+            uiState = when (error) {
+                is NumberFormatException -> UiState.Error(error = IllegalArgumentException(INVALID_ORDER_MESSAGE))
+                is IndexOutOfBoundsException -> UiState.Error(error = IllegalArgumentException(INVALID_ORDER_MESSAGE))
+                else -> UiState.Error(error = error)
             }
+        }
+    }
+
+    private fun List<String>.checkFormats() = forEach { menuAndAmount ->
+        require(!menuAndAmount.any { it.isWhitespace() }) { INVALID_ORDER_MESSAGE }
+        require(menuAndAmount.count { it == MENU_AMOUNT_DIVIDER } == REQUIRED_MENU_AMOUNT_DIVIDER_COUNT) {
+            INVALID_ORDER_MESSAGE
         }
     }
 
@@ -72,6 +80,7 @@ class EventPlannerViewModel(
 
         const val INVALID_DATE_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
         const val MENU_AMOUNT_DIVIDER = '-'
+        const val REQUIRED_MENU_AMOUNT_DIVIDER_COUNT = 1
         const val INVALID_ORDER_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
     }
 }
