@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
 import java.util.stream.Stream
 
@@ -246,6 +247,28 @@ class EventPlannerViewModelTest {
         assertThat(error.get().message).contains(MenuValidator.TOO_MANY_AMOUNTS_MESSAGE)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideMenusAndAmounts")
+    @DisplayName("주문한 메뉴를 보여준 뒤 총 금액을 계산하여 uiState에 반영")
+    fun displayMenusAndAmountsDone_menusAndAmountsSet_uiStateIncludesTotalPrice(
+        menusAndAmounts: List<String>,
+        expected: Int
+    ) {
+        // given
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+
+        val totalPrice = AtomicInteger()
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.DisplayMenusAndAmountsDone) totalPrice.set(uiState.totalPrice)
+        }
+
+        // when
+        viewModel.displayMenusAndAmountsDone()
+
+        // then
+        assertThat(totalPrice.get()).isEqualTo(expected)
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -254,6 +277,13 @@ class EventPlannerViewModelTest {
             Arguments.of(listOf("해산물파스타:2", "레드와인-1", "초코케이크-1")),
             Arguments.of(listOf("해산물파스타 - 2", "레드와인-1", "초코케이크-1")),
             Arguments.of(listOf("해산물파스타 2", "레드와인-1", "초코케이크-1")),
+        )
+
+        @JvmStatic
+        private fun provideMenusAndAmounts(): Stream<Arguments> = Stream.of(
+            Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 145_000),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), 8_500),
+            Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 142_000),
         )
     }
 }
