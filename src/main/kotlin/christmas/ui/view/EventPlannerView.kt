@@ -37,11 +37,16 @@ class EventPlannerView(
         viewModel.displayMenusAndAmountsDone()
     }
 
+    private fun onDisplayMenusAndAmountsDone(totalPrice: Int) {
+        outputView.displayMessage(message = "") // new line
+        outputView.displayDiscountNotAppliedTotalPrice(totalPrice = totalPrice)
+    }
+
     private fun handleUiState(uiState: UiState): Unit = when (uiState) {
         UiState.Initialized -> onStart()
         UiState.GetDateDone -> onGetDateDone()
         is UiState.GetMenusAndAmountsDone -> onGetMenusAndAmountsDone(menusAndAmounts = uiState.menusAndAmounts)
-        is UiState.DisplayMenusAndAmountsDone -> Unit // TODO: implement next action
+        is UiState.DisplayMenusAndAmountsDone -> onDisplayMenusAndAmountsDone(totalPrice = uiState.totalPrice)
         is UiState.Error -> handleError(errorState = uiState)
     }
 

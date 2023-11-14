@@ -17,4 +17,8 @@ class TestOutputView : OutputView {
     override fun displayMenusAndAmounts(menusAndAmounts: List<Pair<Menu, Int>>) {
 //        TODO("Not yet implemented")
     }
+
+    override fun displayDiscountNotAppliedTotalPrice(totalPrice: Int) {
+//        TODO("Not yet implemented")
+    }
 }

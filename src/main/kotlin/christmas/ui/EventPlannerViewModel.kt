@@ -1,6 +1,7 @@
 package christmas.ui
 
 import christmas.domain.logic.MenuValidator
+import christmas.domain.logic.calculateTotalPrice
 import christmas.domain.model.Menu
 import christmas.domain.util.onFailureOtherThanNoSuchElementException
 import java.time.LocalDate
@@ -13,6 +14,7 @@ class EventPlannerViewModel(
 ) {
     private lateinit var date: LocalDate
     private lateinit var menusAndAmounts: List<Pair<Menu, Int>>
+    private var totalPrice = TOTAL_PRICE_NOT_INITIALIZED
 
     private var callback: Callback? = null
 
@@ -75,8 +77,8 @@ class EventPlannerViewModel(
     }
 
     fun displayMenusAndAmountsDone() {
-        // TODO: calculate total price from menus and amounts
-        this.uiState = UiState.DisplayMenusAndAmountsDone(totalPrice = 0)
+        totalPrice = menusAndAmounts.calculateTotalPrice()
+        this.uiState = UiState.DisplayMenusAndAmountsDone(totalPrice = totalPrice)
     }
 
     companion object {
@@ -87,5 +89,6 @@ class EventPlannerViewModel(
         const val MENU_AMOUNT_DIVIDER = '-'
         const val REQUIRED_MENU_AMOUNT_DIVIDER_COUNT = 1
         const val INVALID_ORDER_MESSAGE = "유효하지 않은 주문입니다. 다시 입력해 주세요."
+        const val TOTAL_PRICE_NOT_INITIALIZED = -1
     }
 }

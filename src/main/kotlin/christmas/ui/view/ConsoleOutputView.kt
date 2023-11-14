@@ -18,4 +18,9 @@ class ConsoleOutputView : OutputView {
             println(OutputView.MENU_AND_AMOUNT_FORMAT.format(menu.menuName, amount))
         }
     }
+
+    override fun displayDiscountNotAppliedTotalPrice(totalPrice: Int) {
+        println(OutputView.DISCOUNT_NOT_APPLIED_TOTAL_PRICE_TITLE)
+        println(OutputView.PRICE_FORMAT.format(totalPrice))
+    }
 }
