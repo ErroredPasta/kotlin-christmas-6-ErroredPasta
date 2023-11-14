@@ -269,6 +269,29 @@ class EventPlannerViewModelTest {
         assertThat(totalPrice.get()).isEqualTo(expected)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideMenusAndAmountsForGiveaway")
+    @DisplayName("총 금액에 따라 증정 메뉴를 증정할지 uiState에 반영")
+    fun displayMenusAndAmountsDone_menusAndAmountsSet_uiStateIncludesShouldGiveaway(
+        menusAndAmounts: List<String>,
+        expected: Boolean
+    ) {
+        // given
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+        viewModel.displayMenusAndAmountsDone()
+
+        val totalPrice = AtomicBoolean(false)
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.DisplayDiscountNotAppliedTotalPriceDone) totalPrice.set(uiState.shouldGiveaway)
+        }
+
+        // when
+        viewModel.displayDiscountNotAppliedTotalPriceDone()
+
+        // then
+        assertThat(totalPrice.get()).isEqualTo(expected)
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -284,6 +307,13 @@ class EventPlannerViewModelTest {
             Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 145_000),
             Arguments.of(listOf("타파스-1", "제로콜라-1"), 8_500),
             Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 142_000),
+        )
+
+        @JvmStatic
+        private fun provideMenusAndAmountsForGiveaway(): Stream<Arguments> = Stream.of(
+            Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), true),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), false),
+            Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), true),
         )
     }
 }
