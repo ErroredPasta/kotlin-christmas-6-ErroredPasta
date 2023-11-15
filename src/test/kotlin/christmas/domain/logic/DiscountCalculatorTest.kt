@@ -42,8 +42,8 @@ class DiscountCalculatorTest {
                 listOf(Menu.SEAFOOD_PASTA to 2, Menu.RED_WINE to 1, Menu.CHOCOLATE_CAKE to 1),
                 25,
                 listOf(
-                    Discount.Christmas(discountAmount = 3_400),
-                    Discount.Weekday(discountAmount = 2_023),
+                    Discount.Christmas(discountAmount = -3_400),
+                    Discount.Weekday(discountAmount = -2_023),
                     Discount.StarDay,
                     Discount.Giveaway
                 )
@@ -57,8 +57,8 @@ class DiscountCalculatorTest {
                 ),
                 3,
                 listOf(
-                    Discount.Christmas(discountAmount = 1_200),
-                    Discount.Weekday(discountAmount = 4_046),
+                    Discount.Christmas(discountAmount = -1_200),
+                    Discount.Weekday(discountAmount = -4_046),
                     Discount.StarDay,
                     Discount.Giveaway
                 )

@@ -28,6 +28,6 @@ interface OutputView {
         const val WEEKEND_DISCOUNT_NAME = "주말 할인"
         const val STAR_DAY_DISCOUNT_NAME = "특별 할인"
         const val GIVEAWAY_DISCOUNT_NAME = "증정 이벤트"
-        const val DISCOUNT_FORMAT = "%s: -%,d원"
+        const val DISCOUNT_FORMAT = "%s: %,d원"
     }
 }

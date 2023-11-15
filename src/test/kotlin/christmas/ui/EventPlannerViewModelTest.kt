@@ -349,8 +349,8 @@ class EventPlannerViewModelTest {
                 listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"),
                 25,
                 listOf(
-                    Discount.Christmas(discountAmount = 3_400),
-                    Discount.Weekday(discountAmount = 2_023),
+                    Discount.Christmas(discountAmount = -3_400),
+                    Discount.Weekday(discountAmount = -2_023),
                     Discount.StarDay,
                     Discount.Giveaway
                 )
@@ -360,8 +360,8 @@ class EventPlannerViewModelTest {
                 listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"),
                 3,
                 listOf(
-                    Discount.Christmas(discountAmount = 1_200),
-                    Discount.Weekday(discountAmount = 4_046),
+                    Discount.Christmas(discountAmount = -1_200),
+                    Discount.Weekday(discountAmount = -4_046),
                     Discount.StarDay,
                     Discount.Giveaway
                 )
