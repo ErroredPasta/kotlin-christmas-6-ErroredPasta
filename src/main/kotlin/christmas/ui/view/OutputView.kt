@@ -19,9 +19,8 @@ interface OutputView {
         const val PREVIEW_BENEFITS_MESSAGE = "12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n"
         const val ORDERED_MENUS_TITLE = "<주문 메뉴>"
         const val DISCOUNT_NOT_APPLIED_TOTAL_PRICE_TITLE = "<할인 전 총주문 금액>"
-        const val PRICE_FORMAT = "%,d원"
+        const val KRW_FORMAT = "%,d원"
         const val GIVEAWAY_TITLE = "<증정 메뉴>"
-        val giveawayMenu = Menu.CHAMPAGNE to 1
         const val NOTHING = "없음"
         const val BENEFITS_TITLE = "<혜택 내역>"
         const val CHRISTMAS_DISCOUNT_NAME = "크리스마스 디데이 할인"

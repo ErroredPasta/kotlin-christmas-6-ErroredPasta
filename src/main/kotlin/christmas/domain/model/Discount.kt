@@ -1,11 +1,13 @@
 package christmas.domain.model
 
+import christmas.domain.logic.giveawayMenu
+
 sealed class Discount(open val discountAmount: Int) {
     data class Christmas(override val discountAmount: Int) : Discount(discountAmount)
     data class Weekday(override val discountAmount: Int) : Discount(discountAmount)
     data class Weekend(override val discountAmount: Int) : Discount(discountAmount)
     data object StarDay : Discount(STAR_DAY_DISCOUNT_AMOUNT)
-    data object Giveaway : Discount(Menu.CHAMPAGNE.price)
+    data object Giveaway : Discount(giveawayMenu.first.price)
 
     companion object {
         const val STAR_DAY_DISCOUNT_AMOUNT = 1_000

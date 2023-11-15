@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.logic.giveawayMenu
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
@@ -22,14 +23,14 @@ class ConsoleOutputView : OutputView {
 
     override fun displayDiscountNotAppliedTotalPrice(totalPrice: Int) {
         println(OutputView.DISCOUNT_NOT_APPLIED_TOTAL_PRICE_TITLE)
-        println(OutputView.PRICE_FORMAT.format(totalPrice))
+        println(OutputView.KRW_FORMAT.format(totalPrice))
     }
 
     override fun displayShouldGiveaway(shouldGiveaway: Boolean) {
         println(OutputView.GIVEAWAY_TITLE)
 
         val giveawayMenuMessage = if (shouldGiveaway) {
-            val (menu, amount) = OutputView.giveawayMenu
+            val (menu, amount) = giveawayMenu
             OutputView.MENU_AND_AMOUNT_FORMAT.format(menu.menuName, amount)
         } else {
             OutputView.NOTHING
