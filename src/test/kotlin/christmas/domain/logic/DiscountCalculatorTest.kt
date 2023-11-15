@@ -1,5 +1,6 @@
 package christmas.domain.logic
 
+import christmas.domain.logic.DiscountCalculator.calculatedTotalDiscountAmount
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import org.assertj.core.api.Assertions.assertThat
@@ -34,6 +35,20 @@ class DiscountCalculatorTest {
         expected.forEach { assertThat(result).contains(it) }
     }
 
+    @ParameterizedTest
+    @MethodSource("provideDiscountsForTotalDiscountAmount")
+    @DisplayName("혜택 목록이 주어지면 총 혜택 금액을 계산")
+    fun calculatedTotalDiscountAmount_discountsGiven_calculateTotalDiscountAmountCorrectly(
+        discounts: List<Discount>,
+        expected: Int
+    ) {
+        // when
+        val result = discounts.calculatedTotalDiscountAmount()
+
+        // then
+        assertThat(result).isEqualTo(expected)
+    }
+
     companion object {
         @JvmStatic
         private fun provideMenusAndAmountsForToCalculateDiscounts(): Stream<Arguments> = Stream.of(
@@ -63,6 +78,29 @@ class DiscountCalculatorTest {
                     Discount.Giveaway
                 )
             ),
+        )
+
+        @JvmStatic
+        private fun provideDiscountsForTotalDiscountAmount(): Stream<Arguments> = Stream.of(
+            Arguments.of(emptyList<Discount>(), 0),
+            Arguments.of(
+                listOf(
+                    Discount.Christmas(discountAmount = -1_200),
+                    Discount.Weekday(discountAmount = -4_046),
+                    Discount.StarDay,
+                    Discount.Giveaway
+                ),
+                -31_246
+            ),
+            Arguments.of(
+                listOf(
+                    Discount.Christmas(discountAmount = -3_400),
+                    Discount.Weekday(discountAmount = -2_023),
+                    Discount.StarDay,
+                    Discount.Giveaway
+                ),
+                -31_423
+            )
         )
     }
 }
