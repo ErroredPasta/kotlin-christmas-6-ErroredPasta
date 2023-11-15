@@ -3,6 +3,7 @@ package christmas.ui
 import christmas.domain.exception.MenuNotExistException
 import christmas.domain.logic.DiscountCalculator
 import christmas.domain.logic.MenuValidator
+import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -293,6 +294,31 @@ class EventPlannerViewModelTest {
         assertThat(totalPrice.get()).isEqualTo(expected)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideValidParametersForDiscounts")
+    @DisplayName("날짜, 주문 메뉴에 따라 어떤 혜택을 제공할지 uiState에 반영")
+    fun calculateDiscounts_validParametersGiven_uiStateIncludesDiscounts(
+        menusAndAmounts: List<String>,
+        dayOfMonth: Int,
+        expected: List<Discount>
+    ) {
+        // given
+        viewModel.setDate(dayOfMonth = dayOfMonth)
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+
+        val discounts = AtomicReference<List<Discount>>()
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.DiscountsCalculated) discounts.set(uiState.discounts)
+        }
+
+        // when
+        viewModel.calculateDiscounts()
+
+        // then
+        assertThat(discounts.get().size).isEqualTo(expected.size)
+        expected.forEach { assertThat(discounts.get()).contains(it) }
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -315,6 +341,31 @@ class EventPlannerViewModelTest {
             Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), true),
             Arguments.of(listOf("타파스-1", "제로콜라-1"), false),
             Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), true),
+        )
+
+        @JvmStatic
+        private fun provideValidParametersForDiscounts(): Stream<Arguments> = Stream.of(
+            Arguments.of(
+                listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"),
+                25,
+                listOf(
+                    Discount.Christmas(discountAmount = 3_400),
+                    Discount.Weekday(discountAmount = 2_023),
+                    Discount.StarDay,
+                    Discount.Giveaway
+                )
+            ),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, emptyList<Discount>()),
+            Arguments.of(
+                listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"),
+                3,
+                listOf(
+                    Discount.Christmas(discountAmount = 1_200),
+                    Discount.Weekday(discountAmount = 4_046),
+                    Discount.StarDay,
+                    Discount.Giveaway
+                )
+            ),
         )
     }
 }
