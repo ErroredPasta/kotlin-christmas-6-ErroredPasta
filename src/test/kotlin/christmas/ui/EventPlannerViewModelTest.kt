@@ -319,6 +319,31 @@ class EventPlannerViewModelTest {
         expected.forEach { assertThat(discounts.get()).contains(it) }
     }
 
+    @ParameterizedTest
+    @MethodSource("provideValidParametersForTotalDiscountAmount")
+    @DisplayName("혜택이 정해지고 총 혜택 금액 계산시 uiState에 총 혜택 금액 반영")
+    fun calculateTotalDiscountAmount_discountsGiven_uiStateIncludesTotalDiscountAmount(
+        menusAndAmounts: List<String>,
+        dayOfMonth: Int,
+        expected: Int
+    ) {
+        // given
+        viewModel.setDate(dayOfMonth = dayOfMonth)
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+        viewModel.calculateDiscounts()
+
+        val totalDiscountAmount = AtomicInteger()
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.TotalDiscountAmountCalculated) totalDiscountAmount.set(uiState.totalDiscountAmount)
+        }
+
+        // when
+        viewModel.calculateTotalDiscountAmount()
+
+        // then
+        assertThat(totalDiscountAmount.get()).isEqualTo(expected)
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -366,6 +391,13 @@ class EventPlannerViewModelTest {
                     Discount.Giveaway
                 )
             ),
+        )
+
+        @JvmStatic
+        private fun provideValidParametersForTotalDiscountAmount(): Stream<Arguments> = Stream.of(
+            Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 25, -31_423),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, 0),
+            Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 3, -31_246),
         )
     }
 }
