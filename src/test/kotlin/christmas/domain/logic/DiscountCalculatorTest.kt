@@ -2,7 +2,6 @@ package christmas.domain.logic
 
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
-import christmas.ui.EventPlannerViewModel.Companion.GIVEAWAY_PRICE
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
@@ -23,13 +22,11 @@ class DiscountCalculatorTest {
     ) {
         // given
         val date = LocalDate.of(DiscountCalculator.YEAR, DiscountCalculator.MONTH, dayOfMonth)
-        val shouldGiveaway = menusAndAmounts.sumOf { (menu, amount) -> menu.price * amount } >= GIVEAWAY_PRICE
 
         // when
         val result = DiscountCalculator.calculateDiscounts(
             menusAndAmounts = menusAndAmounts,
             date = date,
-            shouldGiveaway = shouldGiveaway
         )
 
         // then

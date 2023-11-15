@@ -17,9 +17,9 @@ object DiscountCalculator {
     fun calculateDiscounts(
         menusAndAmounts: List<Pair<Menu, Int>>,
         date: LocalDate,
-        shouldGiveaway: Boolean
     ): List<Discount> {
-        if (menusAndAmounts.calculateTotalPrice() < DISCOUNT_PRICE_THRESHOLD) return emptyList()
+        val totalPrice = menusAndAmounts.calculateTotalPrice()
+        if (totalPrice < DISCOUNT_PRICE_THRESHOLD) return emptyList()
 
         val discounts = mutableListOf<Discount>()
 
@@ -27,7 +27,7 @@ object DiscountCalculator {
         if (date.isWeekend()) discounts.addWeekendDiscount(menusAndAmounts = menusAndAmounts)
         if (!date.isWeekend()) discounts.addWeekdayDiscount(menusAndAmounts = menusAndAmounts)
         if (date.isStarDay()) discounts.add(Discount.StarDay)
-        if (shouldGiveaway) discounts.add(Discount.Giveaway)
+        if (decideOnGiveaway(totalPrice = totalPrice)) discounts.add(Discount.Giveaway)
 
         return discounts
     }
