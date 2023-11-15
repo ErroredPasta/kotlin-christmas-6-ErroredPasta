@@ -348,7 +348,7 @@ class EventPlannerViewModelTest {
     @ParameterizedTest
     @MethodSource("provideValidParametersToApplyDiscounts")
     @DisplayName("총 혜택 금액 계산 후 총 주문 금액에 적용시 uiState에 혜택이 반영된 주문 금액이 반영")
-    fun applyDiscounts_menusAnddiscountsGiven_uiStateIncludesDiscountAppliedTotalPrice(
+    fun applyDiscounts_menusAndDiscountsGiven_uiStateIncludesDiscountAppliedTotalPrice(
         menusAndAmounts: List<String>,
         dayOfMonth: Int,
         expected: Int
