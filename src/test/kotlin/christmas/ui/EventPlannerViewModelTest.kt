@@ -3,6 +3,7 @@ package christmas.ui
 import christmas.domain.exception.MenuNotExistException
 import christmas.domain.logic.DiscountCalculator
 import christmas.domain.logic.MenuValidator
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import org.assertj.core.api.Assertions.assertThat
@@ -371,6 +372,32 @@ class EventPlannerViewModelTest {
         assertThat(discountAppliedTotalPrice.get()).isEqualTo(expected)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideValidParametersForBadge")
+    @DisplayName("총 혜택 금액 계산 후 배지 결정시 uiState에 부여할 배지가 반영")
+    fun decideBadge_totalDiscountAmountGiven_uiStateIncludesBadge(
+        menusAndAmounts: List<String>,
+        dayOfMonth: Int,
+        expected: Badge
+    ) {
+        // given
+        viewModel.setDate(dayOfMonth = dayOfMonth)
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+        viewModel.calculateDiscounts()
+        viewModel.calculateTotalDiscountAmount()
+
+        val badge = AtomicReference<Badge>(null)
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.BadgeDecided) badge.set(uiState.badge)
+        }
+
+        // when
+        viewModel.decideBadge()
+
+        // then
+        assertThat(badge.get()).isEqualTo(expected)
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -432,6 +459,15 @@ class EventPlannerViewModelTest {
             Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 25, 113_577),
             Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, 8_500),
             Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 3, 110_754),
+        )
+
+        @JvmStatic
+        private fun provideValidParametersForBadge(): Stream<Arguments> = Stream.of(
+            Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 25, Badge.SANTA),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, Badge.NOTHING),
+            Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 3, Badge.SANTA),
+            Arguments.of(listOf("바비큐립-1", "초코케이크-3"), 4, Badge.STAR),
+            Arguments.of(listOf("크리스마스파스타-1", "초코케이크-5"), 5, Badge.TREE),
         )
     }
 }
