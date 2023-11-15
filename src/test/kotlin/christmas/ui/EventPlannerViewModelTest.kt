@@ -251,7 +251,7 @@ class EventPlannerViewModelTest {
     @ParameterizedTest
     @MethodSource("provideMenusAndAmounts")
     @DisplayName("주문한 메뉴를 보여준 뒤 총 금액을 계산하여 uiState에 반영")
-    fun displayMenusAndAmountsDone_menusAndAmountsSet_uiStateIncludesTotalPrice(
+    fun calculateTotalPrice_menusAndAmountsSet_uiStateIncludesTotalPrice(
         menusAndAmounts: List<String>,
         expected: Int
     ) {
@@ -260,11 +260,11 @@ class EventPlannerViewModelTest {
 
         val totalPrice = AtomicInteger()
         viewModel.setCallback { uiState ->
-            if (uiState is UiState.DisplayMenusAndAmountsDone) totalPrice.set(uiState.totalPrice)
+            if (uiState is UiState.TotalPriceCalculated) totalPrice.set(uiState.totalPrice)
         }
 
         // when
-        viewModel.displayMenusAndAmountsDone()
+        viewModel.calculateTotalPrice()
 
         // then
         assertThat(totalPrice.get()).isEqualTo(expected)
@@ -273,21 +273,21 @@ class EventPlannerViewModelTest {
     @ParameterizedTest
     @MethodSource("provideMenusAndAmountsForGiveaway")
     @DisplayName("총 금액에 따라 증정 메뉴를 증정할지 uiState에 반영")
-    fun displayMenusAndAmountsDone_menusAndAmountsSet_uiStateIncludesShouldGiveaway(
+    fun decideOnGiveaway_menusAndAmountsSet_uiStateIncludesShouldGiveaway(
         menusAndAmounts: List<String>,
         expected: Boolean
     ) {
         // given
         viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
-        viewModel.displayMenusAndAmountsDone()
+        viewModel.calculateTotalPrice()
 
         val totalPrice = AtomicBoolean(false)
         viewModel.setCallback { uiState ->
-            if (uiState is UiState.DisplayDiscountNotAppliedTotalPriceDone) totalPrice.set(uiState.shouldGiveaway)
+            if (uiState is UiState.GiveawayDecided) totalPrice.set(uiState.shouldGiveaway)
         }
 
         // when
-        viewModel.displayDiscountNotAppliedTotalPriceDone()
+        viewModel.decideOnGiveaway()
 
         // then
         assertThat(totalPrice.get()).isEqualTo(expected)

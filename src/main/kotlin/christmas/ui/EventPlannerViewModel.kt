@@ -81,23 +81,23 @@ class EventPlannerViewModel(
         Menu.getMenuByMenuName(menuName = menuName) to amount.toInt()
     }
 
-    fun displayMenusAndAmountsDone() {
+    fun calculateTotalPrice() {
         totalPrice = menusAndAmounts.calculateTotalPrice()
-        this.uiState = UiState.DisplayMenusAndAmountsDone(totalPrice = totalPrice)
+        this.uiState = UiState.TotalPriceCalculated(totalPrice = totalPrice)
     }
 
-    fun displayDiscountNotAppliedTotalPriceDone() {
+    fun decideOnGiveaway() {
         this.uiState =
-            UiState.DisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway = decideOnGiveaway(totalPrice = totalPrice))
+            UiState.GiveawayDecided(shouldGiveaway = decideOnGiveaway(totalPrice = totalPrice))
     }
 
-    fun displayShouldGiveawayDone() {
+    fun calculateDiscounts() {
         discounts = discountCalculator.calculateDiscounts(
             date = date,
             menusAndAmounts = menusAndAmounts
         )
 
-        this.uiState = UiState.DisplayShouldGiveawayDone(discounts = discounts)
+        this.uiState = UiState.DiscountsCalculated(discounts = discounts)
     }
 
     companion object {

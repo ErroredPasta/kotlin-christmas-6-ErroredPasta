@@ -35,22 +35,22 @@ class EventPlannerView(
     private fun onGetMenusAndAmountsDone(menusAndAmounts: List<Pair<Menu, Int>>) {
         outputView.displayMessage(message = OutputView.PREVIEW_BENEFITS_MESSAGE)
         outputView.displayMenusAndAmounts(menusAndAmounts = menusAndAmounts)
-        viewModel.displayMenusAndAmountsDone()
+        viewModel.calculateTotalPrice()
     }
 
-    private fun onDisplayMenusAndAmountsDone(totalPrice: Int) {
+    private fun onTotalPriceCalculated(totalPrice: Int) {
         outputView.displayMessage(message = "") // new line
         outputView.displayDiscountNotAppliedTotalPrice(totalPrice = totalPrice)
-        viewModel.displayDiscountNotAppliedTotalPriceDone()
+        viewModel.decideOnGiveaway()
     }
 
-    private fun onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway: Boolean) {
+    private fun onGiveawayDecided(shouldGiveaway: Boolean) {
         outputView.displayMessage(message = "") // new line
         outputView.displayShouldGiveaway(shouldGiveaway = shouldGiveaway)
-        viewModel.displayShouldGiveawayDone()
+        viewModel.calculateDiscounts()
     }
 
-    private fun onDisplayShouldGiveawayDone(discounts: List<Discount>) {
+    private fun onDiscountsCalculated(discounts: List<Discount>) {
         outputView.displayMessage(message = "") // new line
         outputView.displayDiscounts(discounts = discounts)
     }
@@ -59,9 +59,9 @@ class EventPlannerView(
         UiState.Initialized -> onStart()
         UiState.GetDateDone -> onGetDateDone()
         is UiState.GetMenusAndAmountsDone -> onGetMenusAndAmountsDone(menusAndAmounts = uiState.menusAndAmounts)
-        is UiState.DisplayMenusAndAmountsDone -> onDisplayMenusAndAmountsDone(totalPrice = uiState.totalPrice)
-        is UiState.DisplayDiscountNotAppliedTotalPriceDone -> onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway = uiState.shouldGiveaway)
-        is UiState.DisplayShouldGiveawayDone -> onDisplayShouldGiveawayDone(discounts = uiState.discounts)
+        is UiState.TotalPriceCalculated -> onTotalPriceCalculated(totalPrice = uiState.totalPrice)
+        is UiState.GiveawayDecided -> onGiveawayDecided(shouldGiveaway = uiState.shouldGiveaway)
+        is UiState.DiscountsCalculated -> onDiscountsCalculated(discounts = uiState.discounts)
         is UiState.Error -> handleError(errorState = uiState)
     }
 
