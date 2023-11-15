@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
@@ -12,6 +13,7 @@ interface OutputView {
     fun displayDiscounts(discounts: List<Discount>)
     fun displayTotalDiscountAmount(totalDiscountAmount: Int)
     fun displayDiscountAppliedTotalPrice(totalPrice: Int)
+    fun displayBadge(badge: Badge)
 
     companion object {
         const val WELCOME_MESSAGE = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."
@@ -33,5 +35,9 @@ interface OutputView {
         const val DISCOUNT_FORMAT = "%s: %,d원"
         const val TOTAL_DISCOUNT_TITLE = "<총혜택 금액>"
         const val DISCOUNT_APPLIED_TITLE = "<할인 후 예상 결제 금액>"
+        const val BADGE_TITLE = "<12월 이벤트 배지>"
+        const val STAR_BADGE_NAME = "별"
+        const val TREE_BADGE_NAME = "트리"
+        const val SANTA_BADGE_NAME = "산타"
     }
 }

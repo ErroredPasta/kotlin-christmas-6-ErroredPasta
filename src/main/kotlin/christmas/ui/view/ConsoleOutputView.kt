@@ -1,6 +1,7 @@
 package christmas.ui.view
 
 import christmas.domain.logic.giveawayMenu
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
@@ -70,4 +71,17 @@ class ConsoleOutputView : OutputView {
         println(OutputView.DISCOUNT_APPLIED_TITLE)
         println(OutputView.KRW_FORMAT.format(totalPrice))
     }
+
+    override fun displayBadge(badge: Badge) {
+        println(OutputView.BADGE_TITLE)
+        println(badge.badgeName)
+    }
+
+    private val Badge.badgeName: String
+        get() = when (this) {
+            Badge.NOTHING -> OutputView.NOTHING
+            Badge.STAR -> OutputView.STAR_BADGE_NAME
+            Badge.TREE -> OutputView.TREE_BADGE_NAME
+            Badge.SANTA -> OutputView.SANTA_BADGE_NAME
+        }
 }

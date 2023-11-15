@@ -5,6 +5,7 @@ import christmas.domain.logic.DiscountCalculator.calculatedTotalDiscountAmount
 import christmas.domain.logic.MenuValidator
 import christmas.domain.logic.calculateTotalPrice
 import christmas.domain.logic.decideOnGiveaway
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import christmas.domain.util.onFailureOtherThanNoSuchElementException
@@ -110,6 +111,11 @@ class EventPlannerViewModel(
     fun applyDiscounts() {
         // totalDiscountAmount는 음수이므로 서로 더해야한다.
         this.uiState = UiState.DiscountApplied(totalPrice = totalPrice + totalDiscountAmount)
+    }
+
+    fun decideBadge() {
+        this.uiState =
+            UiState.BadgeDecided(Badge.getBadgeByTotalDiscountAmount(totalDiscountAmount = totalDiscountAmount))
     }
 
     companion object {

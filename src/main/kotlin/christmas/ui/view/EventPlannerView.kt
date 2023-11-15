@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import christmas.domain.util.runCatchingUntilSuccess
@@ -65,6 +66,12 @@ class EventPlannerView(
     private fun onDiscountApplied(totalPrice: Int) {
         outputView.displayMessage(message = "") // new line
         outputView.displayDiscountAppliedTotalPrice(totalPrice = totalPrice)
+        viewModel.decideBadge()
+    }
+
+    private fun onBadgeDecided(badge: Badge) {
+        outputView.displayMessage(message = "") // new line
+        outputView.displayBadge(badge = badge)
     }
 
     private fun handleUiState(uiState: UiState): Unit = when (uiState) {
@@ -76,6 +83,7 @@ class EventPlannerView(
         is UiState.DiscountsCalculated -> onDiscountsCalculated(discounts = uiState.discounts)
         is UiState.TotalDiscountAmountCalculated -> onTotalDiscountAmountCalculated(totalDiscountAmount = uiState.totalDiscountAmount)
         is UiState.DiscountApplied -> onDiscountApplied(totalPrice = uiState.totalPrice)
+        is UiState.BadgeDecided -> onBadgeDecided(badge = uiState.badge)
         is UiState.Error -> handleError(errorState = uiState)
     }
 

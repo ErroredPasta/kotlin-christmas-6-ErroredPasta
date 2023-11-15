@@ -1,5 +1,6 @@
 package christmas.ui
 
+import christmas.domain.model.Badge
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
@@ -12,5 +13,6 @@ sealed interface UiState {
     data class DiscountsCalculated(val discounts: List<Discount>) : UiState
     data class TotalDiscountAmountCalculated(val totalDiscountAmount: Int) : UiState
     data class DiscountApplied(val totalPrice: Int) : UiState
+    data class BadgeDecided(val badge: Badge) : UiState
     data class Error(val error: Throwable) : UiState
 }
