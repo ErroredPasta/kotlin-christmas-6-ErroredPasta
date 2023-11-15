@@ -14,7 +14,7 @@ class DiscountCalculatorTest {
 
     @ParameterizedTest
     @MethodSource("provideMenusAndAmountsForToCalculateDiscounts")
-    @DisplayName("메뉴와 날짜, 증정 메뉴 증정 여부가 결정되면 어떤 할인을 받을지 계산")
+    @DisplayName("메뉴와 날짜가 결정되면 어떤 할인을 받을지 계산")
     fun calculateDiscounts_requiredParametersGiven_calculateDiscountsCorrectly(
         menusAndAmounts: List<Pair<Menu, Int>>,
         dayOfMonth: Int,
