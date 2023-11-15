@@ -24,7 +24,7 @@ enum class Menu(val menuName: String, val price: Int, val type: Type) {
     }
 
     companion object {
-        const val MENU_NOT_EXIST_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
+        const val MENU_NOT_EXIST_MESSAGE = "존재하지 않는 메뉴가 있습니다. 다시 입력해 주세요."
 
         fun getMenuByMenuName(menuName: String): Menu =
             entries.find { it.menuName == menuName } ?: throw MenuNotExistException(MENU_NOT_EXIST_MESSAGE)
