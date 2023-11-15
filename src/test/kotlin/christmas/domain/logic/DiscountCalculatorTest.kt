@@ -1,5 +1,7 @@
 package christmas.domain.logic
 
+import christmas.domain.constant.MONTH
+import christmas.domain.constant.YEAR
 import christmas.domain.logic.DiscountCalculator.calculatedTotalDiscountAmount
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
@@ -22,7 +24,7 @@ class DiscountCalculatorTest {
         expected: List<Discount>
     ) {
         // given
-        val date = LocalDate.of(DiscountCalculator.YEAR, DiscountCalculator.MONTH, dayOfMonth)
+        val date = LocalDate.of(YEAR, MONTH, dayOfMonth)
 
         // when
         val result = DiscountCalculator.calculateDiscounts(

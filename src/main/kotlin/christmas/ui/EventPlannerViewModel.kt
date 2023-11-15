@@ -1,5 +1,7 @@
 package christmas.ui
 
+import christmas.domain.constant.MONTH
+import christmas.domain.constant.YEAR
 import christmas.domain.logic.DiscountCalculator
 import christmas.domain.logic.DiscountCalculator.calculatedTotalDiscountAmount
 import christmas.domain.logic.MenuValidator
@@ -119,8 +121,6 @@ class EventPlannerViewModel(
     }
 
     companion object {
-        const val YEAR = 2023
-        const val MONTH = 12
         const val INVALID_DATE_MESSAGE = "유효하지 않은 날짜입니다. 다시 입력해 주세요."
         const val MENU_AMOUNT_DIVIDER = '-'
         const val REQUIRED_MENU_AMOUNT_DIVIDER_COUNT = 1

@@ -1,5 +1,7 @@
 package christmas.domain.logic
 
+import christmas.domain.constant.MONTH
+import christmas.domain.constant.YEAR
 import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import java.time.DayOfWeek
@@ -8,8 +10,6 @@ import java.time.temporal.ChronoUnit
 
 object DiscountCalculator {
     private const val DISCOUNT_PRICE_THRESHOLD = 10_000
-    const val YEAR = 2023
-    const val MONTH = 12
     private const val CHRISTMAS_DAY = 25
     private val christmas = LocalDate.of(YEAR, MONTH, CHRISTMAS_DAY)
     private val beginningOfDecember = LocalDate.of(YEAR, MONTH, 1)
