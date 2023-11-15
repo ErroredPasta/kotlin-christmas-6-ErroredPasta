@@ -107,6 +107,11 @@ class EventPlannerViewModel(
         this.uiState = UiState.TotalDiscountAmountCalculated(totalDiscountAmount = totalDiscountAmount)
     }
 
+    fun applyDiscounts() {
+        // totalDiscountAmount는 음수이므로 서로 더해야한다.
+        this.uiState = UiState.DiscountApplied(totalPrice = totalPrice + totalDiscountAmount)
+    }
+
     companion object {
         const val YEAR = 2023
         const val MONTH = 12

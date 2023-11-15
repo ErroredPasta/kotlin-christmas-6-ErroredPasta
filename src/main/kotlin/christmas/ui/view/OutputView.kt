@@ -11,6 +11,7 @@ interface OutputView {
     fun displayShouldGiveaway(shouldGiveaway: Boolean)
     fun displayDiscounts(discounts: List<Discount>)
     fun displayTotalDiscountAmount(totalDiscountAmount: Int)
+    fun displayDiscountAppliedTotalPrice(totalPrice: Int)
 
     companion object {
         const val WELCOME_MESSAGE = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."
@@ -31,5 +32,6 @@ interface OutputView {
         const val GIVEAWAY_DISCOUNT_NAME = "증정 이벤트"
         const val DISCOUNT_FORMAT = "%s: %,d원"
         const val TOTAL_DISCOUNT_TITLE = "<총혜택 금액>"
+        const val DISCOUNT_APPLIED_TITLE = "<할인 후 예상 결제 금액>"
     }
 }

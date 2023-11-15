@@ -65,4 +65,9 @@ class ConsoleOutputView : OutputView {
         println(OutputView.TOTAL_DISCOUNT_TITLE)
         println(OutputView.KRW_FORMAT.format(totalDiscountAmount))
     }
+
+    override fun displayDiscountAppliedTotalPrice(totalPrice: Int) {
+        println(OutputView.DISCOUNT_APPLIED_TITLE)
+        println(OutputView.KRW_FORMAT.format(totalPrice))
+    }
 }

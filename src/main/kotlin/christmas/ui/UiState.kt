@@ -11,5 +11,6 @@ sealed interface UiState {
     data class GiveawayDecided(val shouldGiveaway: Boolean) : UiState
     data class DiscountsCalculated(val discounts: List<Discount>) : UiState
     data class TotalDiscountAmountCalculated(val totalDiscountAmount: Int) : UiState
+    data class DiscountApplied(val totalPrice: Int) : UiState
     data class Error(val error: Throwable) : UiState
 }
