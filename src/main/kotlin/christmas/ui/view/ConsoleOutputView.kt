@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
 class ConsoleOutputView : OutputView {
@@ -36,4 +37,26 @@ class ConsoleOutputView : OutputView {
 
         println(giveawayMenuMessage)
     }
+
+    override fun displayDiscounts(discounts: List<Discount>) {
+        println(OutputView.BENEFITS_TITLE)
+
+        if (discounts.isEmpty()) {
+            println(OutputView.NOTHING)
+            return
+        }
+
+        discounts.forEach { discount ->
+            println(OutputView.DISCOUNT_FORMAT.format(discount.name, discount.discountAmount))
+        }
+    }
+
+    private val Discount.name: String
+        get() = when (this) {
+            is Discount.Christmas -> OutputView.CHRISTMAS_DISCOUNT_NAME
+            is Discount.Weekday -> OutputView.WEEKDAY_DISCOUNT_NAME
+            is Discount.Weekend -> OutputView.WEEKEND_DISCOUNT_NAME
+            is Discount.StarDay -> OutputView.STAR_DAY_DISCOUNT_NAME
+            is Discount.Giveaway -> OutputView.GIVEAWAY_DISCOUNT_NAME
+        }
 }

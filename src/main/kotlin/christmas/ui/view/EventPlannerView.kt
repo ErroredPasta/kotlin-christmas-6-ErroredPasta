@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 import christmas.domain.util.runCatchingUntilSuccess
 import christmas.ui.EventPlannerViewModel
@@ -46,6 +47,12 @@ class EventPlannerView(
     private fun onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway: Boolean) {
         outputView.displayMessage(message = "") // new line
         outputView.displayShouldGiveaway(shouldGiveaway = shouldGiveaway)
+        viewModel.displayShouldGiveawayDone()
+    }
+
+    private fun onDisplayShouldGiveawayDone(discounts: List<Discount>) {
+        outputView.displayMessage(message = "") // new line
+        outputView.displayDiscounts(discounts = discounts)
     }
 
     private fun handleUiState(uiState: UiState): Unit = when (uiState) {
@@ -54,6 +61,7 @@ class EventPlannerView(
         is UiState.GetMenusAndAmountsDone -> onGetMenusAndAmountsDone(menusAndAmounts = uiState.menusAndAmounts)
         is UiState.DisplayMenusAndAmountsDone -> onDisplayMenusAndAmountsDone(totalPrice = uiState.totalPrice)
         is UiState.DisplayDiscountNotAppliedTotalPriceDone -> onDisplayDiscountNotAppliedTotalPriceDone(shouldGiveaway = uiState.shouldGiveaway)
+        is UiState.DisplayShouldGiveawayDone -> onDisplayShouldGiveawayDone(discounts = uiState.discounts)
         is UiState.Error -> handleError(errorState = uiState)
     }
 

@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
 class TestOutputView : OutputView {
@@ -23,6 +24,10 @@ class TestOutputView : OutputView {
     }
 
     override fun displayShouldGiveaway(shouldGiveaway: Boolean) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun displayDiscounts(discounts: List<Discount>) {
 //        TODO("Not yet implemented")
     }
 }

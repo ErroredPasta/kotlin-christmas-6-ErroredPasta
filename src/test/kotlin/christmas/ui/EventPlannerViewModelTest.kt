@@ -1,6 +1,7 @@
 package christmas.ui
 
 import christmas.domain.exception.MenuNotExistException
+import christmas.domain.logic.DiscountCalculator
 import christmas.domain.logic.MenuValidator
 import christmas.domain.model.Menu
 import org.assertj.core.api.Assertions.assertThat
@@ -23,7 +24,7 @@ class EventPlannerViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        viewModel = EventPlannerViewModel(menuValidator = MenuValidator)
+        viewModel = EventPlannerViewModel(menuValidator = MenuValidator, discountCalculator = DiscountCalculator)
     }
 
     @Test

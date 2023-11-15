@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.model.Discount
 import christmas.domain.model.Menu
 
 interface OutputView {
@@ -8,6 +9,7 @@ interface OutputView {
     fun displayMenusAndAmounts(menusAndAmounts: List<Pair<Menu, Int>>)
     fun displayDiscountNotAppliedTotalPrice(totalPrice: Int)
     fun displayShouldGiveaway(shouldGiveaway: Boolean)
+    fun displayDiscounts(discounts: List<Discount>)
 
     companion object {
         const val WELCOME_MESSAGE = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."
@@ -21,5 +23,12 @@ interface OutputView {
         const val GIVEAWAY_TITLE = "<증정 메뉴>"
         val giveawayMenu = Menu.CHAMPAGNE to 1
         const val NOTHING = "없음"
+        const val BENEFITS_TITLE = "<혜택 내역>"
+        const val CHRISTMAS_DISCOUNT_NAME = "크리스마스 디데이 할인"
+        const val WEEKDAY_DISCOUNT_NAME = "평일 할인"
+        const val WEEKEND_DISCOUNT_NAME = "주말 할인"
+        const val STAR_DAY_DISCOUNT_NAME = "특별 할인"
+        const val GIVEAWAY_DISCOUNT_NAME = "증정 이벤트"
+        const val DISCOUNT_FORMAT = "%s: -%,d원"
     }
 }

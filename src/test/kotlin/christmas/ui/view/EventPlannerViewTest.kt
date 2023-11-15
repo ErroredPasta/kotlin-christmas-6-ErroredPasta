@@ -1,5 +1,6 @@
 package christmas.ui.view
 
+import christmas.domain.logic.DiscountCalculator
 import christmas.domain.logic.MenuValidator
 import christmas.ui.EventPlannerViewModel
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +19,7 @@ class EventPlannerViewTest {
     fun setUp() {
         inputView = TestInputView()
         outputView = TestOutputView()
-        viewModel = EventPlannerViewModel(menuValidator = MenuValidator)
+        viewModel = EventPlannerViewModel(menuValidator = MenuValidator, discountCalculator = DiscountCalculator)
 
         view = EventPlannerView(inputView = inputView, outputView = outputView, viewModel = viewModel)
     }
