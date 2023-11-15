@@ -344,6 +344,33 @@ class EventPlannerViewModelTest {
         assertThat(totalDiscountAmount.get()).isEqualTo(expected)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideValidParametersToApplyDiscounts")
+    @DisplayName("총 혜택 금액 계산 후 총 주문 금액에 적용시 uiState에 혜택이 반영된 주문 금액이 반영")
+    fun applyDiscounts_menusAnddiscountsGiven_uiStateIncludesDiscountAppliedTotalPrice(
+        menusAndAmounts: List<String>,
+        dayOfMonth: Int,
+        expected: Int
+    ) {
+        // given
+        viewModel.setDate(dayOfMonth = dayOfMonth)
+        viewModel.setMenusAndAmounts(menusAndAmounts = menusAndAmounts)
+        viewModel.calculateTotalPrice()
+        viewModel.calculateDiscounts()
+        viewModel.calculateTotalDiscountAmount()
+
+        val discountAppliedTotalPrice = AtomicInteger()
+        viewModel.setCallback { uiState ->
+            if (uiState is UiState.DiscountApplied) discountAppliedTotalPrice.set(uiState.totalPrice)
+        }
+
+        // when
+        viewModel.applyDiscounts()
+
+        // then
+        assertThat(discountAppliedTotalPrice.get()).isEqualTo(expected)
+    }
+
     companion object {
         const val VALID_DAY_OF_MONTH = 1
 
@@ -398,6 +425,13 @@ class EventPlannerViewModelTest {
             Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 25, -31_423),
             Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, 0),
             Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 3, -31_246),
+        )
+
+        @JvmStatic
+        private fun provideValidParametersToApplyDiscounts(): Stream<Arguments> = Stream.of(
+            Arguments.of(listOf("해산물파스타-2", "레드와인-1", "초코케이크-1"), 25, 113_577),
+            Arguments.of(listOf("타파스-1", "제로콜라-1"), 26, 8_500),
+            Arguments.of(listOf("티본스테이크-1", "바비큐립-1", "초코케이크-2", "제로콜라-1"), 3, 110_754),
         )
     }
 }
