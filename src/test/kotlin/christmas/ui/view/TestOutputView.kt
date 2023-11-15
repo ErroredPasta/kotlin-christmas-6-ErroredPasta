@@ -30,4 +30,8 @@ class TestOutputView : OutputView {
     override fun displayDiscounts(discounts: List<Discount>) {
 //        TODO("Not yet implemented")
     }
+
+    override fun displayTotalDiscountAmount(totalDiscountAmount: Int) {
+//        TODO("Not yet implemented")
+    }
 }

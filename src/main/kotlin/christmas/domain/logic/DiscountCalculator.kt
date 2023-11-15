@@ -32,6 +32,8 @@ object DiscountCalculator {
         return discounts
     }
 
+    fun List<Discount>.calculatedTotalDiscountAmount(): Int = this.sumOf { it.discountAmount }
+
     private fun MutableList<Discount>.addChristmasDiscount(date: LocalDate) {
         val daysFromBeginning = ChronoUnit.DAYS.between(beginningOfDecember, date).toInt()
         val discountAmount =

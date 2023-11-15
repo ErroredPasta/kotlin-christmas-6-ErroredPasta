@@ -60,4 +60,9 @@ class ConsoleOutputView : OutputView {
             is Discount.StarDay -> OutputView.STAR_DAY_DISCOUNT_NAME
             is Discount.Giveaway -> OutputView.GIVEAWAY_DISCOUNT_NAME
         }
+
+    override fun displayTotalDiscountAmount(totalDiscountAmount: Int) {
+        println(OutputView.TOTAL_DISCOUNT_TITLE)
+        println(OutputView.KRW_FORMAT.format(totalDiscountAmount))
+    }
 }

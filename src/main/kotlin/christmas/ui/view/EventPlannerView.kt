@@ -53,6 +53,12 @@ class EventPlannerView(
     private fun onDiscountsCalculated(discounts: List<Discount>) {
         outputView.displayMessage(message = "") // new line
         outputView.displayDiscounts(discounts = discounts)
+        viewModel.calculateTotalDiscountAmount()
+    }
+
+    private fun onTotalDiscountAmountCalculated(totalDiscountAmount: Int) {
+        outputView.displayMessage(message = "") // new line
+        outputView.displayTotalDiscountAmount(totalDiscountAmount = totalDiscountAmount)
     }
 
     private fun handleUiState(uiState: UiState): Unit = when (uiState) {
@@ -62,6 +68,7 @@ class EventPlannerView(
         is UiState.TotalPriceCalculated -> onTotalPriceCalculated(totalPrice = uiState.totalPrice)
         is UiState.GiveawayDecided -> onGiveawayDecided(shouldGiveaway = uiState.shouldGiveaway)
         is UiState.DiscountsCalculated -> onDiscountsCalculated(discounts = uiState.discounts)
+        is UiState.TotalDiscountAmountCalculated -> onTotalDiscountAmountCalculated(totalDiscountAmount = uiState.totalDiscountAmount)
         is UiState.Error -> handleError(errorState = uiState)
     }
 
