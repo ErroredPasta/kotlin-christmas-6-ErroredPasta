@@ -1,5 +1,13 @@
 package christmas
 
+import christmas.di.EventPlannerComponent
+import christmas.di.EventPlannerComponentImpl
+
 fun main() {
-    TODO("프로그램 구현")
+    val component = createEventPlannerComponent()
+    val view = component.getEventPlannerView()
+
+    view.start()
 }
+
+fun createEventPlannerComponent(): EventPlannerComponent = EventPlannerComponentImpl()
